@@ -25,8 +25,11 @@ const Board = () => {
     const [selectedPiece, setSelectedPiece] = useState(null);
     const [error, setError] = useState('');
     const [possibleMoves, setPossibleMoves] = useState([]);
+    const [winner, setWinner] = useState(null);
 
     const handleSquareClick = (row, col) => {
+        if (winner) return;
+
         console.log(`Click on [${row}, ${col}]`);
         const piece = board[row][col];
         console.log(`Is Correct turn? ${isCorrectTurn(piece)}`);
@@ -35,6 +38,7 @@ const Board = () => {
             const [selectedRow, selectedCol] = selectedPiece;
             if (isValidMove(selectedRow, selectedCol, row, col)) {
                 movePiece(selectedRow, selectedCol, row, col);
+                checkForWinner(row, col);
                 switchTurn();
                 setSelectedPiece(null);
                 setPossibleMoves([]);
@@ -98,9 +102,20 @@ const Board = () => {
         setTurn(turn === 'white' ? 'black' : 'white');
     };
 
+    const checkForWinner = (row, col) => {
+        const capturedPiece = board[row][col];
+        if (capturedPiece && capturedPiece instanceof King) {
+            setWinner(turn === 'white' ? 'black' : 'white');
+        }
+    };
+
     return (
         <div>
-            <h2>{turn.charAt(0).toUpperCase() + turn.slice(1)}'s Turn</h2>
+            {winner ? (
+                <h2>{`${winner.charAt(0).toUpperCase() + winner.slice(1)} Wins!`}</h2>
+            ) : (
+                <h2>{`${turn.charAt(0).toUpperCase() + turn.slice(1)}'s Turn`}</h2>
+            )}
             {error && <div className="error">{error}</div>}
             <div className="board">
                 {board.map((row, rowIndex) => (
