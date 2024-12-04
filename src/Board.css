@@ -3,6 +3,7 @@
     display: grid;
     grid-template-rows: repeat(8, 50px);
     grid-template-columns: repeat(8, 50px);
+    margin: 0 auto;
 }
 
 .board-row {
@@ -16,11 +17,14 @@
     justify-content: center;
     align-items: center;
     border: 1px solid black;
-    background-color: #f0d9b5;
     cursor: pointer;
 }
 
-.board-square:nth-child(even) {
+.light-square {
+    background-color: #f0d9b5;
+}
+
+.dark-square {
     background-color: #b58863;
 }
 

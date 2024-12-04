@@ -120,20 +120,23 @@ const Board = () => {
             <div className="board">
                 {board.map((row, rowIndex) => (
                     <div key={rowIndex} className="board-row">
-                        {row.map((piece, colIndex) => (
-                            <div
-                                key={colIndex}
-                                className={`board-square ${
-                                    possibleMoves.some(([r, c]) => r === rowIndex && c === colIndex)
-                                        ? 'highlight'
-                                        : ''
-                                }`}
-                                onClick={() => handleSquareClick(rowIndex, colIndex)}
-                                style={piece ? piece.style : {}}
-                            >
-                                {piece ? <img src={piece.style.backgroundImage.slice(5, -2)} alt="" /> : null}
-                            </div>
-                        ))}
+                        {row.map((piece, colIndex) => {
+                            const squareShade = (rowIndex + colIndex) % 2 === 0 ? 'light-square' : 'dark-square';
+                            return (
+                                <div
+                                    key={colIndex}
+                                    className={`board-square ${squareShade} ${
+                                        possibleMoves.some(([r, c]) => r === rowIndex && c === colIndex)
+                                            ? 'highlight'
+                                            : ''
+                                    }`}
+                                    onClick={() => handleSquareClick(rowIndex, colIndex)}
+                                    style={piece ? piece.style : {}}
+                                >
+                                    {piece ? <img src={piece.style.backgroundImage.slice(5, -2)} alt="" /> : null}
+                                </div>
+                            );
+                        })}
                     </div>
                 ))}
             </div>
