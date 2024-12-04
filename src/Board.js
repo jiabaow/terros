@@ -7,21 +7,15 @@ import Rook from "./pieces/Rook";
 import Knight from "./pieces/Knight";
 import Queen from "./pieces/Queen";
 import King from "./pieces/King";
-// Import other piece classes as needed
 
 const initialBoardSetup = [
-    // Black pieces
     [new Rook('black'), new Knight('black'), new Bishop('black'), new Queen('black'), new King('black'), new Bishop('black'), new Knight('black'), new Rook('black')],
-    //[null, null, null, null, null, null, null, null],
     [new Pawn('black'), new Pawn('black'), new Pawn('black'), new Pawn('black'), new Pawn('black'), new Pawn('black'), new Pawn('black'), new Pawn('black')],
-    // Empty rows
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
-    // White pieces
     [new Pawn('white'), new Pawn('white'), new Pawn('white'), new Pawn('white'), new Pawn('white'), new Pawn('white'), new Pawn('white'), new Pawn('white')],
-    //[null, null, null, null, null, null, null, null],
     [new Rook('white'), new Knight('white'), new Bishop('white'), new Queen('white'), new King('white'), new Bishop('white'), new Knight('white'), new Rook('white')],
 ];
 
@@ -58,7 +52,6 @@ const Board = () => {
             console.log(`Possible moves: ${JSON.stringify(moves)}`);
             setError('');
         } else {
-            // Clear possible moves and selection if clicking on an empty square or wrong piece
             setSelectedPiece(null);
             setPossibleMoves([]);
         }
@@ -77,6 +70,10 @@ const Board = () => {
             for (let col = 0; col < 8; col++) {
                 const dest = row * 8 + col;
                 const src = startRow * 8 + startCol;
+                const destPiece = board[row][col];
+                if (destPiece && destPiece.player === piece.player) {
+                    continue;
+                }
                 const isDestEnemyOccupied = board[row][col] && board[row][col].player !== piece.player;
                 if (piece.isMovePossible(src, dest, isDestEnemyOccupied)) {
                     moves.push([row, col]);
