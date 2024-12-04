@@ -110,7 +110,7 @@ const Board = () => {
     };
 
     return (
-        <div>
+        <div className="container">
             {winner ? (
                 <h2>{`${winner.charAt(0).toUpperCase() + winner.slice(1)} Wins!`}</h2>
             ) : (
