@@ -167,9 +167,13 @@ const Board = () => {
                 <h2>{`${turn.charAt(0).toUpperCase() + turn.slice(1)}'s Turn`}</h2>
             )}
             {error && <div className="error">{error}</div>}
-            <div>
-                <div>White Timer: {formatTime(whiteTimer)}</div>
-                <div>Black Timer: {formatTime(blackTimer)}</div>
+            <div className="timers">
+                <div className="timer white-timer">
+                    White Timer: {formatTime(whiteTimer)}
+                </div>
+                <div className="timer black-timer">
+                    Black Timer: {formatTime(blackTimer)}
+                </div>
             </div>
             <div className="board">
                 {board.map((row, rowIndex) => (

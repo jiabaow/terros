@@ -12,6 +12,31 @@ body, html {
     text-align: center;
 }
 
+.timers {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px 0;
+}
+
+.timer {
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.white-timer {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.black-timer {
+    background-color: #333;
+    color: #f0f0f0;
+}
+
 .board {
     display: grid;
     grid-template-rows: repeat(8, 50px);
