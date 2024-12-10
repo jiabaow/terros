@@ -26,8 +26,9 @@ const Board = () => {
     const [error, setError] = useState('');
     const [possibleMoves, setPossibleMoves] = useState([]);
     const [winner, setWinner] = useState(null);
-    const [whiteTimer, setWhiteTimer] = useState(600)
-    const [blackTimer, setBlackTimer] = useState(600)
+    const [whiteTimer, setWhiteTimer] = useState(600);
+    const [blackTimer, setBlackTimer] = useState(600);
+    const [history, setHistory] = useState([]);
 
     const handleSquareClick = (row, col) => {
         if (winner) return;
@@ -145,7 +146,17 @@ const Board = () => {
         const newBoard = board.map((row) => row.slice());
         newBoard[endRow][endCol] = newBoard[startRow][startCol];
         newBoard[startRow][startCol] = null;
+        setHistory([...history, board]);
         setBoard(newBoard);
+    };
+
+    const handleUndo = () => {
+        if (history.length === 0) return;
+
+        const previousBoard = history[history.length - 1];
+        setHistory(history.slice(0, -1));
+        setBoard(previousBoard);
+        setTurn(turn === 'white' ? 'black' : 'white');
     };
 
     const switchTurn = () => {
@@ -198,10 +209,8 @@ const Board = () => {
                     </div>
                 ))}
             </div>
-            <div className="button"
-                 onClick={() => handleResetGame()}>
-                Reset
-            </div>
+            <button className="button" onClick={handleUndo}>Undo</button>
+            <div className="button" onClick={() => handleResetGame()}>Reset</div>
         </div>
     );
 };
