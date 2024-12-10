@@ -1,5 +1,5 @@
 // src/Board.js
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './Board.css';
 import Pawn from './pieces/Pawn';
 import Bishop from "./pieces/Bishop";
@@ -26,6 +26,8 @@ const Board = () => {
     const [error, setError] = useState('');
     const [possibleMoves, setPossibleMoves] = useState([]);
     const [winner, setWinner] = useState(null);
+    const [whiteTimer, setWhiteTimer] = useState(600)
+    const [blackTimer, setBlackTimer] = useState(600)
 
     const handleSquareClick = (row, col) => {
         if (winner) return;
@@ -60,6 +62,54 @@ const Board = () => {
             setPossibleMoves([]);
         }
     };
+
+    useEffect(() => {
+        if (winner) return;
+
+        const tick = setInterval(() => {
+            if (turn === 'white') {
+                setWhiteTimer((prev) => {
+                    if (prev <= 1) {
+                        setWinner('black');
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            } else {
+                setBlackTimer((prev) => {
+                    if (prev <= 1) {
+                        setWinner('white');
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }
+        }, 1000);
+
+        return () => clearInterval(tick);
+    }, [turn, winner]);
+
+
+    const resetAll = () => {
+        setBoard(initialBoardSetup);
+        setTurn('white')
+        setSelectedPiece(null)
+        setPossibleMoves([])
+        setWinner(null)
+        setError()
+        setWhiteTimer(600)
+        setBlackTimer(600)
+    }
+
+    const handleResetGame = () => {
+        resetAll()
+    }
+
+    const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+    }
 
     const isValidMove = (startRow, startCol, endRow, endCol) => {
         return possibleMoves.some(([r, c]) => r === endRow && c === endCol);
@@ -117,6 +167,10 @@ const Board = () => {
                 <h2>{`${turn.charAt(0).toUpperCase() + turn.slice(1)}'s Turn`}</h2>
             )}
             {error && <div className="error">{error}</div>}
+            <div>
+                <div>White Timer: {formatTime(whiteTimer)}</div>
+                <div>Black Timer: {formatTime(blackTimer)}</div>
+            </div>
             <div className="board">
                 {board.map((row, rowIndex) => (
                     <div key={rowIndex} className="board-row">
@@ -133,12 +187,16 @@ const Board = () => {
                                     onClick={() => handleSquareClick(rowIndex, colIndex)}
                                     style={piece ? piece.style : {}}
                                 >
-                                    {piece ? <img src={piece.style.backgroundImage.slice(5, -2)} alt="" /> : null}
+                                    {piece ? <img src={piece.style.backgroundImage.slice(5, -2)} alt=""/> : null}
                                 </div>
                             );
                         })}
                     </div>
                 ))}
+            </div>
+            <div className="button"
+                 onClick={() => handleResetGame()}>
+                Reset
             </div>
         </div>
     );

@@ -33,6 +33,17 @@ body, html {
     cursor: pointer;
 }
 
+.button {
+    width: fit-content;
+    height: fit-content;
+    justify-content: center;
+    border: 2px solid black;
+    background-color: lightblue;
+    padding: 1px;
+    margin: 30px;
+    cursor: pointer;
+}
+
 .light-square {
     background-color: #f0d9b5;
 }
